@@ -13,7 +13,7 @@
 
 #define BUTTONPIN	2
 
-#define FADESPEED	2		// larger = slower fade
+#define FADESPEED	1		// larger = slower fade
 #define SWIRLSPEED	10		// larger = slower fade
 #define ON			1
 #define OFF			0
@@ -57,7 +57,7 @@ void setup() {
 
 void loop(){
 
-	color_swirl();
+	//color_swirl();
 
 	if (Serial.available() > 0) 
 	{
@@ -120,8 +120,9 @@ void set_color(int channel, int color[])
 {
 	if(channel == 1)
 	{
-		for(int i = get_min(current_color) ; i <= get_max(color) ; i++)//Fade up
+		for(int up = get_min(current_color), down = get_max(current_color); up <= get_max(color) ; up++, down--)
 		{
+			//Fade up
 			if(current_color[0] < color[0])//red
 			{
 				analogWrite(REDPIN, current_color[0]++);
@@ -137,10 +138,7 @@ void set_color(int channel, int color[])
 				analogWrite(BLUEPIN, current_color[2]++);
 				delay(FADESPEED);
 			}
-		}
-
-		for(int i = get_max(current_color) ; i >= get_min(color) ; i--)//Fade down
-		{
+			//Fade down
 			if(current_color[0] > color[0])//red
 			{
 				analogWrite(REDPIN, current_color[0]--);
